@@ -37,10 +37,8 @@ export const SignOutUserAsync = createAsyncThunk(
     'user/signOut',
     async (_, thunkApi) => {
         try {
-            const res = await projectAuth.signOut();
-            if (!res) {
-                return thunkApi.rejectWithValue('something went wrong')
-            }
+            await projectAuth.signOut();
+
         } catch (e) {
             return thunkApi.rejectWithValue(e.message);
         }
@@ -50,8 +48,15 @@ export const SignOutUserAsync = createAsyncThunk(
 
 export const AuthSlice = createSlice({
     name: "Auth",
-    initialState: {user: null, loading: false, error: null},
-    reducers: {},
+    initialState: {user: null, loading: false, error: null, authIsReady: false},
+    reducers: {
+        checkAuthIsReady: (state, {payload}) => {
+            state.authIsReady = true;
+            state.user = {email: payload.email};
+
+        }
+
+    },
     extraReducers: {
 
         //region *** SignUpUserAsync() ====>signs up user  ***
@@ -76,7 +81,8 @@ export const AuthSlice = createSlice({
         },
         [SignInUserAsync.fulfilled]: (state, {payload}) => {
             state.loading = false;
-            state.user = payload;
+
+            state.user = {email: payload.email};
             state.error = false;
         },
         [SignInUserAsync.rejected]: (state, {payload}) => {
@@ -90,7 +96,7 @@ export const AuthSlice = createSlice({
             state.loading = true;
             state.error = false;
         },
-        [SignInUserAsync.fulfilled]: (state) => {
+        [SignOutUserAsync.fulfilled]: (state) => {
             state.loading = false;
             state.user = null
             state.error = false;
@@ -105,6 +111,6 @@ export const AuthSlice = createSlice({
     }
 
 })
-
+export const {checkAuthIsReady} = AuthSlice.actions;
 
 export const authReducer = AuthSlice.reducer;

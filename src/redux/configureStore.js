@@ -6,5 +6,5 @@ import {logger} from "redux-logger/src";
 export const store = configureStore({
     reducer: {auth: authReducer},
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(logger),
+        getDefaultMiddleware({serializableCheck:false}).concat(logger),
 })
