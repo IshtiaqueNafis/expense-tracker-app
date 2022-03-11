@@ -1,12 +1,12 @@
 import React from 'react';
-import styles from "NavBar.css"
 import {Link} from "react-router-dom";
+import  "./NavBar.css"
 
 const NavBar = () => {
     return (
-        <nav className={styles.navbar}>
+        <nav className={'navbar'}>
             <ul>
-                <li className={styles.title}>
+                <li className={'title'}>
                     My Money
                 </li>
                 <li>
@@ -20,5 +20,4 @@ const NavBar = () => {
         </nav>
     );
 };
-
 export default NavBar;
