@@ -1,17 +1,18 @@
 import React, {useState} from 'react';
 import './SignUp.css'
-import {useSignUp} from "../../hooks/useSignUp";
+import {useDispatch, useSelector} from "react-redux";
+import {SignUpUserAsync} from "../../redux/reducers/AuthSliceReducer";
 
 const SignUp = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [displayName, setDisplayName] = useState('')
-    const {signUp, isPending, error} = useSignUp();
-
+    const {error, loading} = useSelector(state => state.auth)
+    const dispatch = useDispatch()
     const handleSubmit = async (e) => {
         e.preventDefault()
+        await dispatch(SignUpUserAsync({email, password, displayName}))
 
-        await signUp(email, password, displayName)
     }
 
     return (
@@ -41,8 +42,8 @@ const SignUp = () => {
                     value={displayName}
                 />
             </label>
-            {!isPending && <button className="btn">Sign up</button>}
-            {isPending && <button className="btn" disabled>loading</button>}
+            <button className="btn">Sign up</button>
+
             {error && <p>{error}</p>}
         </form>
     );
