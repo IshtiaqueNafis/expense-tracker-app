@@ -1,10 +1,16 @@
 import React from 'react';
-import styles from './HomePage.css';
+import './HomePage.css';
+import TransactionForm from "../TransactionForm/TransActionForm";
 
 const HomePage = () => {
     return (
-        <div>
-            home
+        <div className={'container'}>
+            <div className={'content'}>
+                transaction list
+            </div>
+            <div className={'sidebar'}>
+                <TransactionForm/>
+            </div>
         </div>
     );
 };

@@ -14,18 +14,18 @@ const NavBar = () => {
                     My Money
                 </li>
 
-                {!user && <>
+                {!user &&
+                <>
                     <li>
                         <Link to="/login">Login</Link>
                     </li>
                     <li>
                         <Link to="/signup">Signup</Link>
                     </li>
-
                 </>}
 
 
-                {user && <button onClick={()=>dispatch(SignOutUserAsync())}>SignOut</button> }
+                {user && <button className={'btn'} onClick={()=>dispatch(SignOutUserAsync())}>SignOut</button> }
             </ul>
 
         </nav>
