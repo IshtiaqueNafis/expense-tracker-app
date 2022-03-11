@@ -1,15 +1,20 @@
 import React, {useState} from 'react';
+import {useDispatch} from "react-redux";
+import {createExpenseAsync} from "../../redux/reducers/ExpenseSliceReducer";
 
 const TransactionForm = () => {
     const [name, setName] = useState('')
     const [amount, setAmount] = useState('')
 
+    const dispatch = useDispatch()
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log({
             name,
             amount,
         })
+
+        dispatch(createExpenseAsync({name, amount}));
     }
 
     return (

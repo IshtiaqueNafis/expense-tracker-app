@@ -52,7 +52,7 @@ export const AuthSlice = createSlice({
     reducers: {
         checkAuthIsReady: (state, {payload}) => {
             state.authIsReady = true;
-            state.user = {email: payload.email};
+            state.user = {email: payload.email, uid: payload.uid};
 
         }
 
@@ -81,8 +81,8 @@ export const AuthSlice = createSlice({
         },
         [SignInUserAsync.fulfilled]: (state, {payload}) => {
             state.loading = false;
-
-            state.user = {email: payload.email};
+            console.log({payload});
+            state.user = {email: payload.email, uid: payload.uid};
             state.error = false;
         },
         [SignInUserAsync.rejected]: (state, {payload}) => {
