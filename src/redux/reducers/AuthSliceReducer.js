@@ -17,12 +17,30 @@ export const SignUpUserAsync = createAsyncThunk(
     }
 )
 
+export const SignInUserAsync = createAsyncThunk(
+    'user/login',
+    async ({email, password}, thunkApi) => {
+        try {
+            const res = await projectAuth.signInWithEmailAndPassword(email, password)
+            if (!res) {
+                return thunkApi.rejectWithValue('esomething went wrong')
+            }
+            return res.user;
+
+        } catch (e) {
+            return thunkApi.rejectWithValue(e.message);
+        }
+    }
+)
+
 
 export const AuthSlice = createSlice({
     name: "Auth",
     initialState: {user: null, loading: false, error: null},
     reducers: {},
     extraReducers: {
+
+        //region *** SignUpUserAsync() ====>signs up user  ***
         [SignUpUserAsync.pending]: (state) => {
             state.loading = true;
             state.error = false;
@@ -34,8 +52,28 @@ export const AuthSlice = createSlice({
         [SignUpUserAsync.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
+        },
+        //endregion
+
+        //region ***SignInUserAsync() ====> signs in user***
+        [SignInUserAsync.pending]: (state) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [SignInUserAsync.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.user = payload;
+            state.error = false;
+        },
+        [SignInUserAsync.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = payload;
         }
+        //endregion
+
+
     }
+
 })
 
 
