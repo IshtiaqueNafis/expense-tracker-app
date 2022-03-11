@@ -33,6 +33,20 @@ export const SignInUserAsync = createAsyncThunk(
     }
 )
 
+export const SignOutUserAsync = createAsyncThunk(
+    'user/signOut',
+    async (_, thunkApi) => {
+        try {
+            const res = await projectAuth.signOut();
+            if (!res) {
+                return thunkApi.rejectWithValue('something went wrong')
+            }
+        } catch (e) {
+            return thunkApi.rejectWithValue(e.message);
+        }
+    }
+)
+
 
 export const AuthSlice = createSlice({
     name: "Auth",
@@ -66,6 +80,22 @@ export const AuthSlice = createSlice({
             state.error = false;
         },
         [SignInUserAsync.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = payload;
+        },
+        //endregion
+
+        //region ***SignOutUserAsync*** ===>Signs out User
+        [SignOutUserAsync.pending]: (state) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [SignInUserAsync.fulfilled]: (state) => {
+            state.loading = false;
+            state.user = null
+            state.error = false;
+        },
+        [SignOutUserAsync.rejected]: (state, {payload}) => {
             state.loading = false;
             state.error = payload;
         }
